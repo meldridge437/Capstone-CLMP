@@ -11,6 +11,7 @@
 ######### Libraries #########
 import sys
 from mysql.connector import connect, Error
+#from termios import tcflush, TCIFLUSH
 #from time import time
 
 ######### Global Vars #########
@@ -25,74 +26,181 @@ DBFieldsList = ["id","username","pin","last_updated","last_accessed"]
 
 ######### Functions #########
 
+# IP Connect to DB
 def connectMYSQL():
     try:
+        # Pass needed creeeedentials 
         connection = connect(host=HOST,user=USER,password=PASS,database=DB)
+
+        # return the whole and cursor() because this is needed for every interaction 
         return connection, connection.cursor()
     except Error as e:
         print(e)
         exit(1)
 
-def findInDB(field, identifierField, identifier):
-    query = "select {} from access where {} = {};".format(field,identifierField,identifier)
+def findInDB(wantedFieldsList, KnownColumnList, KnownDataList, isUpdate=False):
+    # Take Lists and Convert them to strings MySQL will take
+    strArgs = formatFunctionArgs([wantedFieldsList,KnownColumnList,KnownDataList],[False,False,True])
+
+    #Form the appropriate Query
+    query = "select {} from access where {} = {};".format(strArgs[0],strArgs[1],strArgs[2])
+    
+    # Web Connect to DB
     connection, cursor = connectMYSQL()
+
+    # Run the query
     cursor.execute(query)
-    results = cursor.fetchall()
-    cleanUP(connection)
-    return results
+
+    # Capture Results
+    rawResults = cursor.fetchall()
+
+    # Reformat MySQL Output to more Python Friendly List
+    results = resultsToLists(rawResults)
+
+    # Updating entries require finding first and the active session
+    if (isUpdate):
+        return connection, cursor, results
+    else:
+        # properly close connection
+        cleanUP(connection)
+        return results
 
 
-#def updateDBEntry()
+def updateDBEntry(KnownColumnList, KnownDataList, setColumnsList, DataToBeSetList):
+    # Get the id # of the entry to be updated
+    connection, cursor, foundResults = findInDB(["id"], KnownColumnList, KnownDataList, True)
 
-def createNewDBEntry(fields, fieldsData):
-    query = "insert into access {} values {};".format(fields,fieldsData)
-    connection, cursor = connectMYSQL()
+    # Take Lists and Convert them to strings MySQL will Take
+    strArgs = formatFunctionArgs([setColumnsList, DataToBeSetList],[False,True])
+
+    # Form the query
+    query = "update access set {} = {} where id = {};".format(strArgs[0],strArgs[1],foundResults[0])
+
+    # Run the Query
     cursor.execute(query)
+
+    # Commit the changes to the DB
     connection.commit()
+
+    # Properly close the connection
+    cleanUP(connection)
+    return 
+
+
+def createNewDBEntry(fieldsList, fieldsData):
+    # Take Lists and Convert them to strings MySQL will take
+    strArgs = formatFunctionArgs([fieldsList, fieldsData],[False,True])
+
+    # Form the Query
+    query = "insert into access {} values {};".format(strArgs[0],strArgs[1])
+
+    # Web Connect to DB
+    connection, cursor = connectMYSQL()
+
+    # Run the Query
+    cursor.execute(query)
+
+    # Commit any changes to the DB
+    connection.commit()
+
+    # Properly close connection
     cleanUP(connection)
     return
 
 def deleteDBEntry(databaseID):
+    # Form the query
     delete = "delete from access where id = {};".format(databaseID)
+
+    # Web Connect to DB
     connection, cursor = connectMYSQL()
+
+    # Run the Query
     cursor.execute(delete)
+
+    # Commit the changes to the DB
     connection.commit()
+
+    # Properly close the connection
     cleanUP(connection)
     return
 
 def cleanUP(connection):
     connection.close()
+    #tcflush(sys.stdin,TCIFLUSH)
     return
 
+# MySQL is Very Picky. This gets Python List of args to 
+# the format MySQL will accept
+# NOTE: MySQL handles strings a little different 
+#       depending if they are the name of a column vs data
 def argsToMYSQLFormat(argsList,areInputVals=False):
+    # MySQL requires (,,,) for lists
+    
+    # MySQL doesn't like (*) so override if statement
+    if (argsList == "*"):
+        return argsList
+    if (len(argsList) == 1):
+        return (str(argsList[0]),"\""+str(argsList[0])+"\"")[areInputVals]
+
     argStr = "("
     for arg in argsList:
+        # Numbers can be directly added
         if (str(arg).isdigit()):
             argStr += str(arg) + ","
+
+        # Strings to be stored within the database need "" around them
         elif (areInputVals):
             argStr += "\"" + arg + "\","
+
+        # Strings that are names of table columns are directly added
         else:
             argStr += arg + ","
     fullArgStr = argStr[:-1] + ")"
     return fullArgStr
 
+# To Handle 2D Arrays that need to be formatted with different constraints
+# Mainly Called inside the above fuctions
+# NOTE: DO NOT PRE-FORMAT LISTS TO BE PASSED TO THE OTHER FUNCTIONS
+def formatFunctionArgs(argsList, areInputsList):
+    formattedArgs = []
+    i = 0
+    # Run through each list that is to be formatted
+    for arg in argsList:
+        formattedArgs.append(argsToMYSQLFormat(arg,areInputsList[i]))
+        i += 1
 
-######### MAIN #########
-fields = DBFieldsList[1:3]
-data = ["matt",12345]
+    # return list of strings for querys
+    return formattedArgs
 
-formattedFields = argsToMYSQLFormat(fields)
-formattedData = argsToMYSQLFormat(data,True)
+# MySQL returns a python List with 1 element that is a multi-tuple
+def resultsToLists(mysqlOutput):
+    parts = []
 
-print("fields: " + formattedFields)
-print("  data: " + formattedData)
+    # Get the Data out from the original list
+    multiPart = mysqlOutput[0]
 
-#createNewDBEntry(formattedFields,formattedData)
+    # place each element directly into a list
+    for part in multiPart:
+        parts.append(part)
 
-results = findInDB("*","pin",12345)
+    # Return Python Friendly MySQL Results
+    return parts
 
-print(results)
 
-#deleteDBEntry(1)
+######### MAIN ######### ====>  TESTING
+#fields = [DBFieldsList[2]]
+#data = [12345]
 
-#exit(0)
+#print("len(data): {}".format(len(data)))
+
+
+#updateFields = [DBFieldsList[2]]
+#updateData = [54321]
+
+#print(findInDB('*',fields,data))
+
+#updateDBEntry(fields, data, updateFields, updateData)
+
+#print(findInDB('*',updateFields,updateData))
+
+
