@@ -9,10 +9,11 @@
 import adafruit_matrixkeypad
 from digitalio import DigitalInOut
 import board
+from time import sleep
 
 # Classic 4x4 matrix keypad
-cols = [DigitalInOut(x) for x in (board.D0, board.D2, board.D4, board.D6)]
-rows = [DigitalInOut(x) for x in (board.D1, board.D3, board.D5, board.D7)]
+cols = [DigitalInOut(x) for x in (board.D18, board.D19, board.D20, board.D21)]
+rows = [DigitalInOut(x) for x in (board.D22, board.D23, board.D24, board.D25)]
 keys = ((1, 2, 3, 'R'),
         (4, 5, 6, 'Y'),
         (7, 8, 9, 'N'),
@@ -44,16 +45,16 @@ def getPIN(lengthPIN=8):
 
 def getLetterResponse():
 	while True:
-		if (!str(keyPressed).isdigit()):
+		if (not str(keyPressed).isdigit()):
 			return keyPressed
-		time.sleep(0.1)
+		sleep(0.1)
 
 #################### MAIN #########################
 
-''' given sample for testing
+'''# given sample for testing
 while True:
     keys = keypad.pressed_keys
     if keys:
         print("Pressed: ", keys)
-    time.sleep(0.1)
+    sleep(0.1)
 '''
