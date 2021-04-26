@@ -5,7 +5,8 @@ import sys
 sys.path.append("./hardware")
 
 from hardware import keypad as keypadMod
-
+from hardware import fingerprint as fprintMod
+from hardware import lock as lockMod
 # Pins definitions
 btn_pin = 22
 
@@ -26,7 +27,10 @@ sound = mixer.Sound('applause-1.wav')
 
 enteredPin = ""
 
+def check_fingerprint():
+    return fprintMod.get_fingerprint(), fprintMod.finger.finger_id
 
+openLock = False
 # If button is pushed, light up LED
 try:
     while True:
@@ -45,7 +49,13 @@ try:
         dbEntry = findInDB(["username", "fingerID"], ["pin"], [enteredPin])
         if (dbEntry != []):
             # do things
-        
+            if keys == "*":
+                openLock, fingerID_Actual = check_fingerprint()
+                if fingerID_Actual == dbEntry[1] and openLock:
+                    lockMod.unlock()
+
+
+
 
 
 # When you press ctrl+c, this will be called
