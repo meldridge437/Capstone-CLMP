@@ -22,7 +22,7 @@ USER = "capdb"
 PASS = "capstone2020-1"
 DB = "doorlock"
 
-DBFieldsList = ["id","username","pin","last_updated","last_accessed"]
+DBFieldsList = ["id","username","pin","fingertID"]
 
 ######### Functions #########
 

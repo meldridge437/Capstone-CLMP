@@ -40,11 +40,12 @@ try:
         
         while(keys != "E"):
             if keys:
-                enteredPin += keys
+                enteredPin += keys[0]
             ## Check if in database ##
-            ## To Do ##
-
-            #if in database
+        dbEntry = findInDB(["username", "fingerID"], ["pin"], [enteredPin])
+        if (dbEntry != []):
+            # do things
+        
 
 
 # When you press ctrl+c, this will be called
