@@ -16,6 +16,13 @@ GPIO.setmode(GPIO.BCM)
 # Set relay pins as output
 GPIO.setup(25, GPIO.OUT)
 RELAY = 25
+global prevTime
+
+def unlockDoor():
+    GPIO.output(RELAY, GPIO.HIGH)
+    prevTime = time.time()
+    doorUnlock  = True
+    print("door unlock")
 #Initialize 'currentname' to trigger only when a new person is identified.
 currentname = "unknown"
 #Determine faces from encodings.pickle file model created from train_model.py
@@ -142,8 +149,4 @@ cv2.destroyAllWindows()
 vs.stop()
 GPIO.cleanup()
 
-def unlockDoor():
-    GPIO.output(RELAY, GPIO.HIGH)
-    prevTime = time.time()
-    doorUnlock  = True
-    print("door unlock")
+
