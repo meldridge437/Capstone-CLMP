@@ -1,5 +1,6 @@
 #! /usr/bin/python
-
+import sys
+sys.path.append('../hardware')
 # import the necessary packages
 from imutils.video import VideoStream
 from imutils.video import FPS
@@ -10,9 +11,9 @@ import time
 import cv2
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
 
-    # Set relay pins as output
+GPIO.setmode(GPIO.BCM)
+# Set relay pins as output
 GPIO.setup(25, GPIO.OUT)
 RELAY = 25
 #Initialize 'currentname' to trigger only when a new person is identified.
@@ -82,10 +83,7 @@ while True:
             matchedIdxs = [i for (i, b) in enumerate(matches) if b]
             counts = {}
             #unlock door
-            GPIO.output(RELAY, GPIO.HIGH)
-            prevTime = time.time()
-            doorUnlock  = True
-            print("door unlock")
+            unlockDoor()
 
 
             # loop over the matched indexes and maintain a count for
@@ -108,7 +106,7 @@ while True:
         names.append(name)
 
     #lock door after 5 seconds
-    if doorUnlock == True and time.time() - prevTime > 5:
+    if doorUnlock == True and time.time() - prevTime > 3:
 
         doorUnlock = False
         GPIO.output(RELAY, GPIO.LOW)
@@ -144,3 +142,8 @@ cv2.destroyAllWindows()
 vs.stop()
 GPIO.cleanup()
 
+def unlockDoor():
+    GPIO.output(RELAY, GPIO.HIGH)
+    prevTime = time.time()
+    doorUnlock  = True
+    print("door unlock")
