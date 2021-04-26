@@ -11,18 +11,12 @@ import time
 import cv2
 import RPi.GPIO as GPIO
 
-
+import RGB
 GPIO.setmode(GPIO.BCM)
 # Set relay pins as output
 GPIO.setup(25, GPIO.OUT)
 RELAY = 25
-global prevTime
-
-def unlockDoor():
-    GPIO.output(RELAY, GPIO.HIGH)
-    prevTime = time.time()
-    doorUnlock  = True
-    print("door unlock")
+    
 #Initialize 'currentname' to trigger only when a new person is identified.
 currentname = "unknown"
 #Determine faces from encodings.pickle file model created from train_model.py
@@ -90,7 +84,10 @@ while True:
             matchedIdxs = [i for (i, b) in enumerate(matches) if b]
             counts = {}
             #unlock door
-            unlockDoor()
+            GPIO.output(RELAY, GPIO.HIGH)
+            prevTime = time.time()
+            doorUnlock  = True
+            print("door unlock")
 
 
             # loop over the matched indexes and maintain a count for
