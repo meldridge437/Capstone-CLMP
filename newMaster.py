@@ -52,12 +52,16 @@ try:
         
         #"E" is the D on keypad
         while(keys != "E"):
+            
             if keys:
                 enteredPin += keys[0]
+            sleep(.5)
             ## Check if in database ##
         dbEntry = findInDB(["username", "fingerID"], ["pin"], [enteredPin])
         #if keypin is valid
         if (dbEntry != []):
+
+            print ("keypad correct")
             # activate fingerprint sensor
             if keys == "*":
                 openLock, fingerID_Actual = check_fingerprint()
