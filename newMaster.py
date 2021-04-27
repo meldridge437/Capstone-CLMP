@@ -4,7 +4,7 @@ from pygame import mixer
 import sys
 sys.path.append("./hardware")
 #test
-
+import db_client as db
 #hardware modules
 from hardware import keypad as keypadMod
 from hardware import fingerprint as fprintMod
@@ -55,7 +55,7 @@ try:
                 enteredPin += keys[0]
             sleep(.5)
             ## Check if in database ##
-        dbEntry = findInDB(["username", "fingerID"], ["pin"], [enteredPin])
+        dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [enteredPin])
         #if keypin is valid
         if (dbEntry != []):
 
