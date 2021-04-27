@@ -24,6 +24,8 @@ bluePin = 13
 GPIO.setup(redPin,GPIO.OUT)
 GPIO.setup(greenPin,GPIO.OUT)
 GPIO.setup(bluePin,GPIO.OUT)
+#lock time variable
+lockTime=3
 
 # Initialize pygame mixer
 mixer.init()
@@ -66,7 +68,7 @@ try:
                 if fingerID_Actual == dbEntry[1] and openLock:
                     #openDoor 2 step MFA
                     rgbMod.green()
-                    lockMod.unlockTimed()
+                    lockMod.unlockTimed(lockTime)
             #activate facial req
             if keys == "#":
                 while(keys != "E"):
@@ -76,7 +78,7 @@ try:
                     if (faceDetected and name == dbEntry[0]):
                         #openDoor 2 step MFA success
                         rgbMod.green()
-                        lockMod.unlockTimed()
+                        lockMod.unlockTimed(lockTime)
                         break
 
 # When you press ctrl+c, this will be called
