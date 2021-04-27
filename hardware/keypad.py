@@ -50,10 +50,10 @@ def getLetterResponse():
 		sleep(0.1)
 
 #################### MAIN #########################
-
+"""
 # given sample for testing
 while True:
     keys = keypad.pressed_keys
     if keys:
         print("Pressed: ", keys)
-    sleep(0.1)
+    sleep(0.1)""""
