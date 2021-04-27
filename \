@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 import sys
 sys.path.append("./hardware")
 #test
-sys.path.append("./test/facial_recognition")
+
 #hardware modules
 from hardware import keypad as keypadMod
 from hardware import fingerprint as fprintMod
@@ -19,13 +19,11 @@ GPIO.setmode(GPIO.BCM)
 #set red,green and blue pins
 redPin = 17
 greenPin = 16
-bluePin = 12
+bluePin = 13
 #set pins as outputs
 GPIO.setup(redPin,GPIO.OUT)
 GPIO.setup(greenPin,GPIO.OUT)
 GPIO.setup(bluePin,GPIO.OUT)
-#lock time variable
-lockTime=3
 
 # Initialize pygame mixer
 #mixer.init()
@@ -44,9 +42,6 @@ rgbMod.lightBlue()
 sleep(1)
 rgbMod.red()
 
-#init lock
-lockMod.lock()
-
 openLock = False
 # If button is pushed, light up LED
 try:
@@ -58,31 +53,20 @@ try:
         while(keys != "E" and len(enteredPin) < 8):
             if keys:
                 enteredPin += keys[0]
-                sleep(.5)
+            sleep(.5)
             ## Check if in database ##
-<<<<<<< HEAD
         dbEntry = findInDB(["username", "fingerID"], ["pin"], [enteredPin])
         #if keypin is valid
         if (dbEntry != []):
 
             print ("keypad correct")
-=======
-        dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [enteredPin])
-        while(True):
-            #if keypin is invalid
-            if (dbEntry == []):
-                print ("keypad incorrect")
-            else:
-                print("keypad correct")
->>>>>>> cd21df70809cb7cd5e12acf1035c5689d45fa9ee
             # activate fingerprint sensor
             if keys == "*":
                 openLock, fingerID_Actual = check_fingerprint()
-                if openLock and fingerID_Actual == dbEntry[1]:
+                if fingerID_Actual == dbEntry[1] and openLock:
                     #openDoor 2 step MFA
                     rgbMod.green()
-                    lockMod.unlockTimed(lockTime)
-                break
+                    lockMod.unlockTimed()
             #activate facial req
             if keys == "#":
                 while(keys != "E"):
@@ -92,7 +76,7 @@ try:
                     if (faceDetected and name == dbEntry[0]):
                         #openDoor 2 step MFA success
                         rgbMod.green()
-                        lockMod.unlockTimed(lockTime)
+                        lockMod.unlockTimed()
                         break
 
 # When you press ctrl+c, this will be called
