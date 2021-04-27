@@ -174,7 +174,7 @@ def get_num():
         except ValueError:
             pass
     return i
-
+"""
 
 while True:
     print("----------------")
@@ -204,4 +204,4 @@ while True:
         else:
             print("Failed to delete")
 
-    
+"""    

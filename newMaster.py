@@ -60,13 +60,7 @@ try:
                 enteredPin += keys[0]
                 sleep(.5)
             ## Check if in database ##
-<<<<<<< HEAD
-        dbEntry = findInDB(["username", "fingerID"], ["pin"], [enteredPin])
-        #if keypin is valid
-        if (dbEntry != []):
 
-            print ("keypad correct")
-=======
         dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [enteredPin])
         while(True):
             #if keypin is invalid
@@ -74,7 +68,7 @@ try:
                 print ("keypad incorrect")
             else:
                 print("keypad correct")
->>>>>>> cd21df70809cb7cd5e12acf1035c5689d45fa9ee
+
             # activate fingerprint sensor
             if keys == "*":
                 openLock, fingerID_Actual = check_fingerprint()
