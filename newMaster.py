@@ -42,7 +42,7 @@ try:
         #Check for key entry, when key is in database, check fingerprint and/or facial
         keys = keypadMod.keypad.pressed_keys
         
-        while(keys != "E"):
+        while(keys != "E" and len(enteredPin) < 8):
             if keys:
                 enteredPin += keys[0]
             ## Check if in database ##
