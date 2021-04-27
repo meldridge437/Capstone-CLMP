@@ -1,7 +1,6 @@
 #! /usr/bin/python
 import sys
 sys.path.append('../hardware')
-sys.path.append(".")
 # import the necessary packages
 from imutils.video import VideoStream
 from imutils.video import FPS
@@ -12,21 +11,13 @@ import time
 import cv2
 import RPi.GPIO as GPIO
 
-import RGB as rgbMod
-#import fingerprint as fprint
-GPIO.setmode(GPIO.BCM)
-# Set relay pins as output
-GPIO.setup(25, GPIO.OUT)
-RELAY = 25
-GPIO.output(RELAY, GPIO.LOW)
-rgbMod.green()
+    
 #Initialize 'currentname' to trigger only when a new person is identified.
 currentname = "unknown"
 #Determine faces from encodings.pickle file model created from train_model.py
 encodingsP = "encodings.pickle"
 #use this xml file
 cascade = "haarcascade_frontalface_default.xml"
-
 # load the known faces and embeddings along with OpenCV's Haar
 # cascade for face detection
 print("[INFO] loading encodings + face detector...")
@@ -42,12 +33,8 @@ time.sleep(2.0)
 # start the FPS counter
 fps = FPS().start()
 
-
-prevTime = 0
-doorUnlock = False
-
 # loop over frames from the video file stream
-while True:
+def main():
     # grab the frame from the threaded video stream and resize it
     # to 500px (to speedup processing)
     frame = vs.read()
@@ -88,39 +75,25 @@ while True:
             matchedIdxs = [i for (i, b) in enumerate(matches) if b]
             counts = {}
             #unlock door
-            GPIO.output(RELAY, GPIO.HIGH)
-            prevTime = time.time()
-            doorUnlock  = True
-            print("door unlock")
-            rgbMod.red()
-
             # loop over the matched indexes and maintain a count for
             # each recognized face face
             for i in matchedIdxs:
                 name = data["names"][i]
                 counts[name] = counts.get(name, 0) + 1
-
             # determine the recognized face with the largest number
             # of votes (note: in the event of an unlikely tie Python
             # will select first entry in the dictionary)
             name = max(counts, key=counts.get)
             
             #If someone in your dataset is identified, print their name on the screen
+            #GRANT ACCESS
             if currentname != name:
                 currentname = name
-                print(currentname)
+                return True, currentname
         
         # update the list of names
         names.append(name)
 
-    #lock door after 5 seconds
-    if doorUnlock == True and time.time() - prevTime > 3:
-
-        doorUnlock = False
-        GPIO.output(RELAY, GPIO.LOW)
-        print("door lock")
-        rgbMod.green()
-        
 
     # loop over the recognized faces
     for ((top, right, bottom, left), name) in zip(boxes, names):
@@ -134,10 +107,6 @@ while True:
     # display the image to our screen
     cv2.imshow("Facial Recognition is Running", frame)
     key = cv2.waitKey(1) & 0xFF
-
-    # quit when 'q' key is pressed
-    if key == ord("q"):
-        break
 
     # update the FPS counter
     fps.update()
