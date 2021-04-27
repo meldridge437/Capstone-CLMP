@@ -8,7 +8,7 @@ GPIO.setmode(GPIO.BCM)
 #set red,green and blue pins
 redPin = 17
 greenPin = 16
-bluePin = 13
+bluePin = 12
 #set pins as outputs
 GPIO.setup(redPin,GPIO.OUT)
 GPIO.setup(greenPin,GPIO.OUT)
@@ -53,21 +53,3 @@ def lightBlue():
     GPIO.output(redPin,GPIO.HIGH)
     GPIO.output(greenPin,GPIO.LOW)
     GPIO.output(bluePin,GPIO.LOW)
-    
-while True:
-    turnOff()
-    sleep(1) #1second
-    white()
-    sleep(1)
-    red()
-    sleep(1)
-    green()
-    sleep(1)
-    blue()
-    sleep(1)
-    yellow()
-    sleep(1)
-    purple()
-    sleep(1)
-    lightBlue()
-    sleep(1)

@@ -11,12 +11,14 @@ import time
 import cv2
 import RPi.GPIO as GPIO
 
-import RGB
+import RGB as rgbMod
+#import fingerprint as fprint
 GPIO.setmode(GPIO.BCM)
 # Set relay pins as output
 GPIO.setup(25, GPIO.OUT)
 RELAY = 25
-    
+GPIO.output(RELAY, GPIO.LOW)
+rgbMod.green()
 #Initialize 'currentname' to trigger only when a new person is identified.
 currentname = "unknown"
 #Determine faces from encodings.pickle file model created from train_model.py
@@ -38,6 +40,7 @@ time.sleep(2.0)
 
 # start the FPS counter
 fps = FPS().start()
+
 
 prevTime = 0
 doorUnlock = False
@@ -88,7 +91,7 @@ while True:
             prevTime = time.time()
             doorUnlock  = True
             print("door unlock")
-
+            rgbMod.red()
 
             # loop over the matched indexes and maintain a count for
             # each recognized face face
@@ -115,6 +118,8 @@ while True:
         doorUnlock = False
         GPIO.output(RELAY, GPIO.LOW)
         print("door lock")
+        rgbMod.green()
+        
 
     # loop over the recognized faces
     for ((top, right, bottom, left), name) in zip(boxes, names):
