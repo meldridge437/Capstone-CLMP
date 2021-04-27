@@ -14,10 +14,10 @@ from time import sleep
 # Classic 4x4 matrix keypad
 cols = [DigitalInOut(x) for x in (board.D18, board.D19, board.D20, board.D21)]
 rows = [DigitalInOut(x) for x in (board.D22, board.D23, board.D24, board.D25)]
-keys = ((1, 2, 3, 'A'),
-        (4, 5, 6, 'B'),
-        (7, 8, 9, 'C'),
-        ('*', 0, '#', 'D'))
+keys = ((1, 2, 3, 'R'),
+        (4, 5, 6, 'Y'),
+        (7, 8, 9, 'N'),
+        ('*', 0, '#', 'E'))
 ''' letter buttons redefined meanings
 R - reset
 Y - yes
