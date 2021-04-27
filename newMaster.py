@@ -61,17 +61,20 @@ try:
             sleep(.5)
             ## Check if in database ##
         dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [enteredPin])
-        #if keypin is valid
-        if (dbEntry != []):
-
-            print ("keypad correct")
+        while(True):
+            #if keypin is invalid
+            if (dbEntry == []):
+                print ("keypad incorrect")
+            else:
+                print("keypad correct")
             # activate fingerprint sensor
             if keys == "*":
                 openLock, fingerID_Actual = check_fingerprint()
-                if fingerID_Actual == dbEntry[1] and openLock:
+                if openLock and fingerID_Actual == dbEntry[1]:
                     #openDoor 2 step MFA
                     rgbMod.green()
                     lockMod.unlockTimed(lockTime)
+                break
             #activate facial req
             if keys == "#":
                 while(keys != "E"):
