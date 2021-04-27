@@ -11,30 +11,40 @@ import time
 import cv2
 import RPi.GPIO as GPIO
 
-    
-#Initialize 'currentname' to trigger only when a new person is identified.
-currentname = "unknown"
-#Determine faces from encodings.pickle file model created from train_model.py
-encodingsP = "encodings.pickle"
-#use this xml file
-cascade = "haarcascade_frontalface_default.xml"
-# load the known faces and embeddings along with OpenCV's Haar
-# cascade for face detection
-print("[INFO] loading encodings + face detector...")
-data = pickle.loads(open(encodingsP, "rb").read())
-detector = cv2.CascadeClassifier(cascade)
+def initFaceReq():
+    #Initialize 'currentname' to trigger only when a new person is identified.
+    currentname = "unknown"
+    #Determine faces from encodings.pickle file model created from train_model.py
+    encodingsP = "encodings.pickle"
+    #use this xml file
+    cascade = "haarcascade_frontalface_default.xml"
+    # load the known faces and embeddings along with OpenCV's Haar
+    # cascade for face detection
+    print("[INFO] loading encodings + face detector...")
+    data = pickle.loads(open(encodingsP, "rb").read())
+    detector = cv2.CascadeClassifier(cascade)
 
-# initialize the video stream and allow the camera sensor to warm up
-print("[INFO] starting video stream...")
-vs = VideoStream(src=0).start()
-#vs = VideoStream(usePiCamera=True).start()
-time.sleep(2.0)
+    # initialize the video stream and allow the camera sensor to warm up
+    print("[INFO] starting video stream...")
+    vs = VideoStream(src=0).start()
+    #vs = VideoStream(usePiCamera=True).start()
+    time.sleep(2.0)
 
-# start the FPS counter
-fps = FPS().start()
+    # start the FPS counter
+    fps = FPS().start()
+
+def cleanUpFaceReq():
+    fps.stop()
+    print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
+    print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+
+    # do a bit of cleanup
+    cv2.destroyAllWindows()
+    vs.stop()
 
 # loop over frames from the video file stream
 def main():
+    initFaceReq()
     while True:
         # grab the frame from the threaded video stream and resize it
         # to 500px (to speedup processing)
@@ -90,6 +100,7 @@ def main():
                 #GRANT ACCESS
                 if currentname != name:
                     currentname = name
+                    cleanUpFaceReq()
                     return True, currentname
             
             # update the list of names
@@ -109,18 +120,12 @@ def main():
         cv2.imshow("Facial Recognition is Running", frame)
         #detect key to break out
         key = cv2.waitKey(1) & 0xFF
-
+        if key == ord("R"):
+            break
         # update the FPS counter
-        #fps.update()
+        fps.update()
 
 """# stop the timer and display FPS information
-fps.stop()
-print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
-print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
-
-# do a bit of cleanup
-cv2.destroyAllWindows()
-vs.stop()
 GPIO.cleanup()
 """
 
