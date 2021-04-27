@@ -44,6 +44,9 @@ rgbMod.lightBlue()
 sleep(1)
 rgbMod.red()
 
+#init lock
+lockMod.lock()
+
 openLock = False
 # If button is pushed, light up LED
 try:
