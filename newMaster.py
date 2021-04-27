@@ -1,4 +1,4 @@
-import time
+from time import sleep
 import RPi.GPIO as GPIO
 #from pygame import mixer
 import sys
@@ -10,6 +10,8 @@ from hardware import keypad as keypadMod
 from hardware import fingerprint as fprintMod
 from hardware import lock as lockMod
 from hardware import RGB as rgbMod
+import db_client as db
+
 #may not set global variable in facial req file
 from facial_req import *
 #disable warnings (optional)
@@ -51,47 +53,67 @@ openLock = False
 # If button is pushed, light up LED
 try:
     while True:
+
         rgbMod.red()
         #Check for key entry, when key is in database, check fingerprint and/or facial
-        keys = keypadMod.keypad.pressed_keys()
+        keys = keypadMod.keypad.pressed_keys
         
-        while(keys != "E" and len(enteredPin) < 8):
+        while(keys != ['E'] and len(enteredPin) < 8):
+            keys = keypadMod.keypad.pressed_keys
             if keys:
-                enteredPin += keys[0]
+                print(keys[0])
+                enteredPin += str(keys[0])
                 sleep(.5)
-            ## Check if in database ##
-
-        dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [enteredPin])
+          
+          ## Check if in database ##
+        try:
+            dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [enteredPin])
+            print("keypad correct")
+            valid_key = True
+        except:
+            print("keypad incorrect")
+            valid_key = False
+            pass 
+    
         while(True):
-            #if keypin is invalid
-            if (dbEntry == []):
-                print ("keypad incorrect")
-            else:
-                print("keypad correct")
+            openLock = False
+            fingerID_Actual = 0
+            keys = keypadMod.keypad.pressed_keys
+            if keys:
 
-            # activate fingerprint sensor
-            if keys == "*":
-                openLock, fingerID_Actual = check_fingerprint()
-                if openLock and fingerID_Actual == dbEntry[1]:
-                    #openDoor 2 step MFA
-                    rgbMod.green()
-                    lockMod.unlockTimed(lockTime)
-                break
-            #activate facial req
-            if keys == "#":
-                while(keys != "E"):
-                    #call facial req's main
-                    faceDetected, name = main()
-                    #make sure same name as matched with key pin
-                    if (faceDetected and name == dbEntry[0]):
-                        #openDoor 2 step MFA success
-                        rgbMod.green()
-                        lockMod.unlockTimed(lockTime)
+                # activate fingerprint sensor
+                if keys[0] == "*":
+                    openLock, fingerID_Actual = check_fingerprint()
+                    if valid_key:
+                        
+                        if openLock and fingerID_Actual == dbEntry[1]:
+                            #openDoor 2 step MFA
+                            rgbMod.green()
+                            lockMod.unlockTimed(lockTime)
+                        else:
+                            enteredPin = ""
                         break
+                    else:
+                        enteredPin = ""
+                        break
+                #activate facial req
+                elif keys[0] == "#":
+                    while(keys != "E"):
+                        #call facial req's main
+                        faceDetected, name = facial_req.main()
+                        #make sure same name as matched with key pin
+                        if (faceDetected and name == dbEntry[0]):
+                            #openDoor 2 step MFA success
+                            rgbMod.green()
+                            lockMod.unlockTimed(lockTime)
+                            break
+                        else:
+                            enteredPin = ""
+                            break
 
 # When you press ctrl+c, this will be called
 finally:
-    cv2.destroyAllWindows()
-    vs.stop()
+    #cv2.destroyAllWindows()
+    #vs.stop()
     GPIO.cleanup()
 
