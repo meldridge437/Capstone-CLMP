@@ -1,6 +1,6 @@
 import time
 import RPi.GPIO as GPIO
-from pygame import mixer
+#from pygame import mixer
 import sys
 sys.path.append("./hardware")
 #test
@@ -26,11 +26,11 @@ GPIO.setup(greenPin,GPIO.OUT)
 GPIO.setup(bluePin,GPIO.OUT)
 
 # Initialize pygame mixer
-mixer.init()
+#mixer.init()
 
 
 # Load the sounds
-sound = mixer.Sound('applause-1.wav')
+#sound = mixer.Sound('applause-1.wav')
 
 enteredPin = ""
 
