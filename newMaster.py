@@ -1,6 +1,6 @@
 import time
 import RPi.GPIO as GPIO
-from pygame import mixer
+#from pygame import mixer
 import sys
 sys.path.append("./hardware")
 #test
@@ -19,7 +19,7 @@ GPIO.setmode(GPIO.BCM)
 #set red,green and blue pins
 redPin = 17
 greenPin = 16
-bluePin = 13
+bluePin = 12
 #set pins as outputs
 GPIO.setup(redPin,GPIO.OUT)
 GPIO.setup(greenPin,GPIO.OUT)
@@ -53,7 +53,7 @@ try:
         while(keys != "E" and len(enteredPin) < 8):
             if keys:
                 enteredPin += keys[0]
-            sleep(.5)
+                sleep(.5)
             ## Check if in database ##
         dbEntry = findInDB(["username", "fingerID"], ["pin"], [enteredPin])
         #if keypin is valid
