@@ -52,8 +52,10 @@ def getLetterResponse():
 #################### MAIN #########################
 
 # given sample for testing
-while True:
-    keys = keypad.pressed_keys
-    if keys:
-        print("Pressed: ", keys)
-    sleep(0.1)
+#
+
+#while True:
+#    keys = keypad.pressed_keys
+#    if keys:
+#        print("Pressed: ", keys)
+#    sleep(0.1)

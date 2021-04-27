@@ -37,10 +37,13 @@ def get_fingerprint():
         pass
     print("Templating...")
     if finger.image_2_tz(1) != adafruit_fingerprint.OK:
+        print('fail')
         return False
     print("Searching...")
     if finger.finger_search() != adafruit_fingerprint.OK:
+        print('fail')
         return False
+    print('success')
     return True
 
 
