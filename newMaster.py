@@ -5,6 +5,8 @@ import sys
 sys.path.append("./hardware")
 #test
 sys.path.append("./test/facial_recognition")
+
+sys.path.append("./facetest")
 #hardware modules
 from hardware import keypad as keypadMod
 from hardware import fingerprint as fprintMod
@@ -12,8 +14,10 @@ from hardware import lock as lockMod
 from hardware import RGB as rgbMod
 import db_client as db
 
+
 #may not set global variable in facial req file
-from facial_req import *
+
+from facetest import facial_req as fq
 #disable warnings (optional)
 GPIO.setwarnings(False)
 #Select GPIO Mode
@@ -53,7 +57,7 @@ openLock = False
 # If button is pushed, light up LED
 try:
     while True:
-
+        print("Awaiting KeyPad Entry...")
         rgbMod.red()
         #Check for key entry, when key is in database, check fingerprint and/or facial
         keys = keypadMod.keypad.pressed_keys
@@ -74,7 +78,9 @@ try:
             print("keypad incorrect")
             valid_key = False
             pass 
-    
+        
+        print("Press * for Fingerprint Scanning")
+        print("Press # for Facial Recognition")
         while(True):
             openLock = False
             fingerID_Actual = 0
@@ -100,20 +106,24 @@ try:
                 elif keys[0] == "#":
                     while(keys != "E"):
                         #call facial req's main
-                        faceDetected, name = facial_req.main()
+                        faceDetected, name = fq.main()
                         #make sure same name as matched with key pin
                         if (faceDetected and name == dbEntry[0]):
-                            #openDoor 2 step MFA success
+			#openDoor 2 step MFA success
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
+                            enteredPin = ""
                             break
                         else:
                             enteredPin = ""
                             break
 
+
+                    break
+
 # When you press ctrl+c, this will be called
 finally:
-    #cv2.destroyAllWindows()
-    #vs.stop()
+    fq.cv2.destroyAllWindows()
+    fq.vs.stop()
     GPIO.cleanup()
 
