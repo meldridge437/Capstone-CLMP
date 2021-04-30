@@ -41,7 +41,7 @@ def findInDB(wantedFieldsList, KnownColumnList, KnownDataList, isUpdate=False):
     # Take Lists and Convert them to strings MySQL will take
     strArgs = formatFunctionArgs([wantedFieldsList,KnownColumnList,KnownDataList],[False,False,True])
     #Form the appropriate Query
-    query = "select {} from access where {} = {};".format(strArgs[0],strArgs[1],strArgs[2])
+    query = "select {} from access_hash where {} = {} limit 1;".format(strArgs[0],strArgs[1],strArgs[2])
     # Web Connect to DB
     connection, cursor = connectMYSQL()
     # Run the query
@@ -65,7 +65,7 @@ def updateDBEntry(KnownColumnList, KnownDataList, setColumnsList, DataToBeSetLis
     # Take Lists and Convert them to strings MySQL will Take
     strArgs = formatFunctionArgs([setColumnsList, DataToBeSetList],[False,True],True)
     # Form the query
-    query = "update access set {} where id = {};".format(strArgs,foundResults[0])
+    query = "update access_hash set {} where id = {};".format(strArgs,foundResults[0])
     # Run the Query
     cursor.execute(query)
     # Commit the changes to the DB
@@ -79,7 +79,7 @@ def createNewDBEntry(fieldsList, fieldsData):
     # Take Lists and Convert them to strings MySQL will take
     strArgs = formatFunctionArgs([fieldsList, fieldsData],[False,True])
     # Form the Query
-    query = "insert into access ({}) values({});".format(strArgs[0],strArgs[1])
+    query = "insert into access_hash ({}) values({});".format(strArgs[0],strArgs[1])
     # Web Connect to DB
     connection, cursor = connectMYSQL()
     # Run the Query
@@ -92,7 +92,7 @@ def createNewDBEntry(fieldsList, fieldsData):
 
 def deleteDBEntry(databaseID):
     # Form the query
-    delete = "delete from access where id = {};".format(databaseID)
+    delete = "delete from access_hash where id = {};".format(databaseID)
     # Web Connect to DB
     connection, cursor = connectMYSQL()
     # Run the Query
