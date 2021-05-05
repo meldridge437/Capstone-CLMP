@@ -14,16 +14,20 @@ imagePaths = list(paths.list_images("dataset"))
 
 #load pickle file
 data=[]
-with open("encodings.pickle", "wrb") as f:
-	try:
-		while True:
-			data.append(pickle.load(f))
-	except EOFError:
-		pass
+with (open("encodings.pickle", "rb")) as fr:
+     while True:
+        try:
+            data.append(pickle.load(fr))
+        except EOFError:
+            break
 
 # initialize the list of known encodings and known names
-knownEncodings = data[0]['encodings']
-knownNames = data[0]['names']
+try:
+    knownEncodings = data[0]['encodings']
+    knownNames = data[0]['names']
+except:
+    knownEncodings=[]
+    knownNames=[]
 pastName =  False
 
 # loop over the image paths
@@ -66,5 +70,6 @@ for (i, imagePath) in enumerate(imagePaths):
 # dump the facial encodings + names to disk
 print("[INFO] serializing encodings...")
 data = {"encodings": knownEncodings, "names": knownNames}
+f=open("encodings.pickle", "wb")
 f.write(pickle.dumps(data))
 f.close()
