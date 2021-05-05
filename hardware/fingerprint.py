@@ -177,8 +177,14 @@ def get_num():
         except ValueError:
             pass
     return i
-"""
 
+def delete_finger(fingerId):
+    if finger.delete_model(fingerId) == adafruit_fingerprint.OK:
+            return True
+        else:
+            return False
+
+"""
 while True:
     print("----------------")
     if finger.read_templates() != adafruit_fingerprint.OK:
