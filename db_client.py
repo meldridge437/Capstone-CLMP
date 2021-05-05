@@ -22,9 +22,17 @@ USER = "capdb"
 PASS = "capstone2020-1"
 DB = "doorlock"
 
-DBFieldsList = ["id","username","pin","fingertID"]
+DBFieldsList = ["id","username","pin","fingerID"]
 
 ######### Functions #########
+
+def hashPin(pin):
+    rawHash = h.pbkdf2_hmac('sha256', pin.encode("utf-8"), "capstone".encode("utf-8"), 1000)
+    strHash = ""
+    for B in rawHash:
+        strHash += str(B)
+    print(strHash)
+    return strHash
 
 # IP Connect to DB
 def connectMYSQL():
@@ -39,9 +47,13 @@ def connectMYSQL():
 
 def findInDB(wantedFieldsList, KnownColumnList, KnownDataList, isUpdate=False):
     # Take Lists and Convert them to strings MySQL will take
-    strArgs = formatFunctionArgs([wantedFieldsList,KnownColumnList,KnownDataList],[False,False,True])
+    strWantedFields = formatFunctionArgs([wantedFieldsList],[False])
+#    print("preparing fucntion args")
+    whereClause = formatFunctionArgs([KnownColumnList, KnownDataList],[False,True],multiWhere=True)
     #Form the appropriate Query
-    query = "select {} from access_hash where {} = {} limit 1;".format(strArgs[0],strArgs[1],strArgs[2])
+    query = "select {} from access_hash where {};".format(strWantedFields[0],whereClause)
+ #   print("MYSQL query: " + query)
+ #   exit(1)
     # Web Connect to DB
     connection, cursor = connectMYSQL()
     # Run the query
@@ -63,9 +75,13 @@ def updateDBEntry(KnownColumnList, KnownDataList, setColumnsList, DataToBeSetLis
     # Get the id # of the entry to be updated
     connection, cursor, foundResults = findInDB(["id"], KnownColumnList, KnownDataList, True)
     # Take Lists and Convert them to strings MySQL will Take
-    strArgs = formatFunctionArgs([setColumnsList, DataToBeSetList],[False,True],True)
+    strArgs = formatFunctionArgs([setColumnsList, DataToBeSetList],[False,True],multiSet=True)
+#    print(strArgs)
+#    exit(1)
     # Form the query
     query = "update access_hash set {} where id = {};".format(strArgs,foundResults[0])
+#    print(query)
+#    exit(1)
     # Run the Query
     cursor.execute(query)
     # Commit the changes to the DB
@@ -77,9 +93,11 @@ def updateDBEntry(KnownColumnList, KnownDataList, setColumnsList, DataToBeSetLis
 
 def createNewDBEntry(fieldsList, fieldsData):
     # Take Lists and Convert them to strings MySQL will take
-    strArgs = formatFunctionArgs([fieldsList, fieldsData],[False,True])
+    strArgs = formatFunctionArgs([fieldsList,fieldsData],[False,True])
     # Form the Query
-    query = "insert into access_hash ({}) values({});".format(strArgs[0],strArgs[1])
+    query = "insert into access_hash ({}) values({});".format(strArgs[0],str(strArgs[1]))
+#    print(query)
+#    exit(1)
     # Web Connect to DB
     connection, cursor = connectMYSQL()
     # Run the Query
@@ -136,13 +154,20 @@ def argsToMYSQLFormat(argsList,areInputVals=False):
 # To Handle 2D Arrays that need to be formatted with different constraints
 # Mainly Called inside the above fuctions
 # NOTE: DO NOT PRE-FORMAT LISTS TO BE PASSED TO THE OTHER FUNCTIONS
-def formatFunctionArgs(argsList, areInputsList, isUpdate=False):
+def formatFunctionArgs(argsList, areInputsList, multiWhere=False, multiSet=False):
     formattedArgs = []
-    if (isUpdate):
+    if (multiSet or multiWhere):
+#        print("entering first IF")
         setsOfArgs = []
         for col,dat in zip(argsList[0],argsList[1]):
             setsOfArgs.append(str(col) + "=" + argsToMYSQLFormat([dat],True))
-        return argsToMYSQLFormat(setsOfArgs)
+        formattedArgs = argsToMYSQLFormat(setsOfArgs)
+        if (multiWhere):
+#            print("enetred second IF")
+            formattedArgs = formattedArgs.replace(",", " AND ")
+#        print(formattedArgs + "\nreturnning\n")
+#        exit(1)
+        return formattedArgs
     i = 0
     # Run through each list that is to be formatted
     for arg in argsList:

@@ -2,24 +2,28 @@ import db_client as db
 import hashlib as h
 
 username = "Peyton"
-pin = "12345"
+pin = "1234"
 fingerID = 1
 
 
 def hashPin(pin):
-    hashed_pin = h.pbkdf2_hmac('sha256', pin, b'capstone', 1000)
-    return hashed_pin
+    rawHash = h.pbkdf2_hmac('sha256', pin.encode("utf-8"), "capstone".encode("utf-8"), 1000)
+    strHash = ""
+    for B in rawHash:
+        strHash += str(B)
+    print(strHash)
+    return strHash
 
 dataSet = [username, hashPin(pin), fingerID]
 
-db.createNewDBEntry(db.DBFieldsList[1:],dataSet)
+#db.createNewDBEntry(db.DBFieldsList[1:],dataSet)
 
 # test to see whats there
-res = db.findInDB(["username"],["pin"],[dataSet[1]])
-print(res)
+#res = db.findInDB(["username"],["pin"],[dataSet[1]])
+#print(res)
 
 # update entry
-newPin = "54321"
-db.updateDBEntry(db.DBFieldsList[1:],res,["pin"],[hashPin(newPin)])
-res2 = db.findInDB(db.DBFieldsList[1:],["fingerID"],[60])
+newPin = "1234"
+db.updateDBEntry(db.DBFieldsList[1:],dataSet,["pin"],[hashPin(newPin)])
+res2 = db.findInDB(db.DBFieldsList[1:],["fingerID"],[1])
 print(res2)
