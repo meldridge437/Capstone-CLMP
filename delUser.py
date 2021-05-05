@@ -21,7 +21,7 @@ def main():
         #Check for key entry, when key is in database, check fingerprint and/or facial
         keys = keypadMod.keypad.pressed_keys
         
-        while(keys != ['E'] and len(enteredPin) < 8):
+        while(keys != ['E'] and len(enteredPin) < 4):
             keys = keypadMod.keypad.pressed_keys
             if keys:
                 print(keys[0])
@@ -30,7 +30,7 @@ def main():
         
         ## Check if in database ##
         try:
-            dbentry = db.findInDB(["id","username", "fingerID"], ["pin"], [enteredPin])
+            dbentry = db.findInDB(["id","username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
             print("keypad correct")
             valid_key = True
             break
