@@ -100,7 +100,7 @@ def main():
                 #GRANT ACCESS
                 if currentname != name:
                     currentname = name
-#                    cleanUpFaceReq()
+                
                     return True, currentname
             
             # update the list of names
