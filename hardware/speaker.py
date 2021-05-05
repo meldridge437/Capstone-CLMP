@@ -1,15 +1,19 @@
-import time
+from time import sleep, time
 import RPi.GPIO as GPIO
-from pygame import mixer
+import contextlib
+with contextlib.redirect_stdout(None):
+
+    from pygame import mixer
+from array import array
 
 # Initialize pygame mixer
 mixer.init()
 
 # Load the sounds
 sound = mixer.Sound('applause-1.wav')
+elapsed = time()
+def main():
 
-# If button is pushed, light up LED
-def playApplause():
     sound.play()
-finally:
-    GPIO.cleanup()
+    sleep(4)
+    sound.stop() 
