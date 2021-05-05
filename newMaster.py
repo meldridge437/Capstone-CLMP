@@ -12,6 +12,7 @@ from hardware import keypad as keypadMod
 from hardware import fingerprint as fprintMod
 from hardware import lock as lockMod
 from hardware import RGB as rgbMod
+from hardware import speaker as speak
 import db_client as db
 
 
@@ -82,6 +83,7 @@ try:
         print("Press * for Fingerprint Scanning")
         print("Press # for Facial Recognition")
         while(True):
+            rgbMod.blue()
             openLock = False
             fingerID_Actual = 0
             keys = keypadMod.keypad.pressed_keys
@@ -94,6 +96,7 @@ try:
                         
                         if openLock and fingerID_Actual == dbEntry[1]:
                             #openDoor 2 step MFA
+                            speak.main()
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
                         else:
@@ -109,7 +112,7 @@ try:
                         faceDetected, name = fq.main()
                         #make sure same name as matched with key pin
                         if (faceDetected and name == dbEntry[0]):
-			#openDoor 2 step MFA success
+                            speak.main()
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
                             enteredPin = ""
