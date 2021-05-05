@@ -82,6 +82,7 @@ try:
         print("Press * for Fingerprint Scanning")
         print("Press # for Facial Recognition")
         while(True):
+            rgbMod.blue()
             openLock = False
             fingerID_Actual = 0
             keys = keypadMod.keypad.pressed_keys
