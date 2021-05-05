@@ -12,9 +12,19 @@ import os
 print("[INFO] start processing faces...")
 imagePaths = list(paths.list_images("dataset"))
 
+#load pickle file
+data=[]
+with open("encodings.pickle", "wrb") as f:
+	try:
+		while True:
+			data.append(pickle.load(f))
+	except EOFError:
+		pass
+
 # initialize the list of known encodings and known names
-knownEncodings = []
-knownNames = []
+knownEncodings = data[0]['encodings']
+knownNames = data[0]['names']
+pastName =  False
 
 # loop over the image paths
 for (i, imagePath) in enumerate(imagePaths):
@@ -22,6 +32,16 @@ for (i, imagePath) in enumerate(imagePaths):
 	print("[INFO] processing image {}/{}".format(i + 1,
 		len(imagePaths)))
 	name = imagePath.split(os.path.sep)[-2]
+
+	#check if name already exist
+	for x in knownNames:
+		if x == name:
+			pastName = True
+			break
+	
+	if pastName == True:
+		pastName = False
+		continue
 
 	# load the input image and convert it from RGB (OpenCV ordering)
 	# to dlib ordering (RGB)
@@ -46,6 +66,5 @@ for (i, imagePath) in enumerate(imagePaths):
 # dump the facial encodings + names to disk
 print("[INFO] serializing encodings...")
 data = {"encodings": knownEncodings, "names": knownNames}
-f = open("encodings.pickle", "wb")
 f.write(pickle.dumps(data))
 f.close()
