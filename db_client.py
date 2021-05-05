@@ -11,6 +11,7 @@
 ######### Libraries #########
 import sys
 from mysql.connector import connect, Error
+import hashlib as h
 #from termios import tcflush, TCIFLUSH
 #from time import time
 
