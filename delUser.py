@@ -2,6 +2,7 @@ from time import sleep
 import RPi.GPIO as GPIO
 import sys
 from random import randint
+from shutil import rmtree
 sys.path.append("./hardware")
 sys.path.append("./facetest")
 
@@ -38,7 +39,7 @@ def main():
             valid_key = False
     db.deleteDBEntry(dbEntry[0])
     try:
-        shutil.rmtree("facetest/dataset/"+dbEntry[1])
+        rmtree("facetest/dataset/"+dbEntry[1])
     except:
         print("Could not find {}".format(dbEntry[1]))
     fprintMod.delete_finger(dbEntry[2])
