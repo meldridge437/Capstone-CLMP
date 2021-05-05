@@ -16,11 +16,11 @@ from facetest import headshotsModule as face
 def main():
     #generate passcode
     while True:
-       for i in range(4):
+        for i in range(4):
            digit = randint(0,9)
-           passcode = int(str(passcode) + str(digit))
+           passcode = str(passcode) + str(digit)
         try:
-            dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [passcode])
+            dbEntry = db.findInDB(["id"], ["pin"], [db.hashPin(passcode)])
         except:
             print("Passcode is {}".format(passcode))
             break
@@ -29,7 +29,7 @@ def main():
     finger = 1
     while True:
         try:
-            dbEntry = db.findInDB([], "fingerID"], [finger])
+            dbEntry = db.findInDB(["id"], ["fingerID"], [finger])
         except:
             break
         finger += 1
@@ -46,5 +46,5 @@ def main():
     face.addPic(name)
 
     #add to Database
-    db.createNewDBEntry(["pin","username", "fingerID"], [passcode, name, finger]])
-    print("User added")
+    db.createNewDBEntry(["username", "pin", "fingerID"], [name, db.hashPin(passcode), finger])
+    print("User {} added".format(name))
