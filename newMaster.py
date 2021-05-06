@@ -79,6 +79,7 @@ try:
             print("keypad incorrect")
             speak.fail()
             valid_key = False
+            dbEntry = ["",0]
             pass 
         
         print("Press * for Fingerprint Scanning")
