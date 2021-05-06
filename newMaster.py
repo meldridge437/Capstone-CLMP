@@ -77,6 +77,7 @@ try:
             valid_key = True
         except:
             print("keypad incorrect")
+            speak.fail()
             valid_key = False
             pass 
         
@@ -96,14 +97,16 @@ try:
                         
                         if openLock and fingerID_Actual == dbEntry[1]:
                             #openDoor 2 step MFA
-                            speak.main()
+                            speak.success()
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
                         else:
+                            speak.fail()
                             enteredPin = ""
                         break
                     else:
                         enteredPin = ""
+                        speak.fail()
                         break
                 #activate facial req
                 elif keys[0] == "#":
@@ -112,13 +115,14 @@ try:
                         faceDetected, name = fq.main()
                         #make sure same name as matched with key pin
                         if (faceDetected and name == dbEntry[0]):
-                            speak.main()
+                            speak.success()
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
                             enteredPin = ""
                             break
                         else:
                             enteredPin = ""
+                            speak.fail()
                             break
 
 

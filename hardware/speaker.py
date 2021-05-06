@@ -10,10 +10,15 @@ from array import array
 mixer.init()
 
 # Load the sounds
-sound = mixer.Sound('applause-1.wav')
-elapsed = time()
-def main():
+goodSound = mixer.Sound('applause-1.wav')
+badSound = mixer.Sound('bad.wav')
 
-    sound.play()
+def success():
+
+    goodSound.play()
     sleep(4)
-    sound.stop() 
+    goodSound.stop() 
+def fail():
+    badSound.play()
+    sleep(3)
+    badSound.stop()
