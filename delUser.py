@@ -63,8 +63,8 @@ def main():
 
     # loop over the names
     index = []
-	for i in len(knownNames):
-		if name == knownNames[i]:
+    for i in len(knownNames):
+        if name == knownNames[i]:
             index.append(i)
     
     for i in len(index):
