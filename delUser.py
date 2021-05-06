@@ -80,3 +80,4 @@ def main():
     fprintMod.delete_finger(dbEntry[2])
 
 main()
+#fprintMod.delete_finger(3)

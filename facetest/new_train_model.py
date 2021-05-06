@@ -8,7 +8,7 @@ import pickle
 import cv2
 import os
 
-def trainHere()
+def trainHere():
 	# our images are located in the dataset folder
 	print("[INFO] start processing faces...")
 	imagePaths = list(paths.list_images("dataset"))
@@ -75,7 +75,7 @@ def trainHere()
 	f.write(pickle.dumps(data))
 	f.close()
 
-def train()
+def train():
 	# our images are located in the dataset folder
 	print("[INFO] start processing faces...")
 	imagePaths = list(paths.list_images("facetest/dataset"))
