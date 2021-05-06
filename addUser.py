@@ -14,12 +14,15 @@ import db_client as db
 from facetest import headshotsModule as face
 
 def main():
-    passcode = None
+    passcode = 0
     #generate passcode
     while True:
         for i in range(4):
            digit = randint(0,9)
-           passcode = str(passcode) + str(digit)
+           if i == 0:
+               passcode=digit
+            else:
+                passcode = str(passcode) + str(digit)
         dbEntry = db.findInDB(["id"], ["pin"], [db.hashPin(passcode)])
         if dbEntry == []:
             print("Passcode is {}".format(passcode))
