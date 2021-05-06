@@ -71,17 +71,16 @@ try:
                 sleep(.5)
           
           ## Check if in database ##
-        try:
-            dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
+        dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
+        if dbEntry == []:
+            print("keypad incorrect")
+            valid_key = False
+            dbEntry = [""]
+        else:
             print("keypad correct")
             valid_key = True
-        except:
-            print("keypad incorrect")
-            speak.fail()
-            valid_key = False
-            dbEntry = ["",0]
-            pass 
-        
+
+
         print("Press * for Fingerprint Scanning")
         print("Press # for Facial Recognition")
         while(True):
