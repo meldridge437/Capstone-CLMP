@@ -12,6 +12,7 @@ from hardware import RGB as rgbMod
 from hardware import speaker as speak
 import db_client as db
 from facetest import headshotsModule as face
+from facetest import new_train_model as trainMod
 
 def main():
     passcode = 0
@@ -51,5 +52,7 @@ def main():
     #add to Database
     db.createNewDBEntry(["username", "pin", "fingerID"], [name, db.hashPin(str(passcode)), finger])
     print("User {} added".format(name))
+    print("Training facial recognition")
+    trainMod.train()
 
 main()
