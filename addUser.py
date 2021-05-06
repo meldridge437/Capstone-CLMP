@@ -27,7 +27,7 @@ def main():
     #generate fingerID
     finger = 1
     while True:
-         dbEntry = db.findInDB(["id"], ["fingerID"], [finger])
+        dbEntry = db.findInDB(["id"], ["fingerID"], [finger])
         if dbEntry == []:
             break
         finger += 1
