@@ -30,14 +30,13 @@ def main():
                 sleep(.5)
         
         ## Check if in database ##
-        try:
-            dbEntry = db.findInDB(["id","username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
-            print("keypad correct")
-            valid_key = True
-            break
-        except:
+        dbEntry = db.findInDB(["id","username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
+
+        if dbEntry == []:
             print("keypad incorrect")
-            valid_key = False
+            return
+        else:
+            print("keypad correct")
     db.deleteDBEntry(dbEntry[0])
     try:
         rmtree("facetest/dataset/"+dbEntry[1])
