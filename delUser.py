@@ -17,26 +17,25 @@ from facetest import headshotsModule as face
 
 def main():
     enteredPin = ""
-    while True:
-        print("Awaiting KeyPad Entry...")
-        #Check for key entry, when key is in database, check fingerprint and/or facial
+    print("Awaiting KeyPad Entry...")
+    #Check for key entry, when key is in database, check fingerprint and/or facial
+    keys = keypadMod.keypad.pressed_keys
+    
+    while(keys != ['E'] and len(enteredPin) < 4):
         keys = keypadMod.keypad.pressed_keys
-        
-        while(keys != ['E'] and len(enteredPin) < 4):
-            keys = keypadMod.keypad.pressed_keys
-            if keys:
-                print(keys[0])
-                enteredPin += str(keys[0])
-                sleep(.5)
-        
-        ## Check if in database ##
-        dbEntry = db.findInDB(["id","username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
+        if keys:
+            print(keys[0])
+            enteredPin += str(keys[0])
+            sleep(.5)
+    
+    ## Check if in database ##
+    dbEntry = db.findInDB(["id","username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
 
-        if dbEntry == []:
-            print("keypad incorrect")
-            return
-        else:
-            print("keypad correct")
+    if dbEntry == []:
+        print("keypad incorrect")
+        return
+    else:
+        print("keypad correct")
     db.deleteDBEntry(dbEntry[0])
     try:
         rmtree("facetest/dataset/"+dbEntry[1])
