@@ -30,7 +30,7 @@ def main():
         
         ## Check if in database ##
         try:
-            dbentry = db.findInDB(["id","username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
+            dbEntry = db.findInDB(["id","username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
             print("keypad correct")
             valid_key = True
             break
