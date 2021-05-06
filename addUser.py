@@ -36,6 +36,7 @@ def main():
             break
         finger += 1
     fprintMod.enroll_finger(finger)
+    print("fingerID is {}".format(finger))
 
     #generate face files
     while True:
@@ -48,7 +49,7 @@ def main():
     face.addPic(name)
 
     #add to Database
-    db.createNewDBEntry(["username", "pin", "fingerID"], [name, db.hashPin(passcode), finger])
+    db.createNewDBEntry(["username", "pin", "fingerID"], [name, db.hashPin(str(passcode)), finger])
     print("User {} added".format(name))
 
 main()
