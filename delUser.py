@@ -3,6 +3,7 @@ import RPi.GPIO as GPIO
 import sys
 from random import randint
 from shutil import rmtree
+import pickle
 sys.path.append("./hardware")
 sys.path.append("./facetest")
 
