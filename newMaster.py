@@ -62,13 +62,17 @@ try:
         rgbMod.red()
         #Check for key entry, when key is in database, check fingerprint and/or facial
         keys = keypadMod.keypad.pressed_keys
-        
+        pastkey=keys
         while(keys != ['E'] and len(enteredPin) < 8):
             keys = keypadMod.keypad.pressed_keys
-            if keys:
-                print(keys[0])
-                enteredPin += str(keys[0])
-                sleep(.5)
+            if key == pastKey:
+                continue
+            else:
+                if keys:
+                    print(keys[0])
+                    enteredPin += str(keys[0])
+                    sleep(.5)
+                pastKey = []
           
           ## Check if in database ##
         try:
