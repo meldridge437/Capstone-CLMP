@@ -46,3 +46,5 @@ def main():
     #add to Database
     db.createNewDBEntry(["username", "pin", "fingerID"], [name, db.hashPin(passcode), finger])
     print("User {} added".format(name))
+
+main()
