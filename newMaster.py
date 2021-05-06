@@ -112,7 +112,11 @@ try:
                 elif keys[0] == "#":
                     while(keys != "E"):
                         #call facial req's main
-                        faceDetected, name = fq.main()
+                        try:
+                            faceDetected, name = fq.main()
+                        except:
+                            faceDetected = False
+                            name = ""
                         #make sure same name as matched with key pin
                         if (faceDetected and name == dbEntry[0]):
                             speak.success()

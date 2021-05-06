@@ -100,6 +100,7 @@ def main():
                 #GRANT ACCESS
                 if currentname != name:
                     currentname = name
+                    cv2.destroyAllWindows()
                 
                     return True, currentname
             
@@ -121,6 +122,7 @@ def main():
         #detect key to break out
         key = cv2.waitKey(1) & 0xFF
         if key == ord("R"):
+            cv2.destroyAllWindows()
             break
         # update the FPS counter
         fps.update()
