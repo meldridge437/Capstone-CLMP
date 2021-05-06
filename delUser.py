@@ -62,11 +62,11 @@ def main():
 
     # loop over the names
     index = []
-    for i in len(knownNames):
+    for i in range(len(knownNames)):
         if name == knownNames[i]:
             index.append(i)
     
-    for i in len(index):
+    for i in range(len(index)):
         del knownNames[index[-1]]
         del knownEncodings[index[-1]]
 
