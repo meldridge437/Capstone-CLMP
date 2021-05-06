@@ -14,6 +14,7 @@ import db_client as db
 from facetest import headshotsModule as face
 
 def main():
+    passcode = None
     #generate passcode
     while True:
         for i in range(4):
