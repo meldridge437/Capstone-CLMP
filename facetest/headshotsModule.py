@@ -12,7 +12,7 @@ def addPic(name):
     img_counter = 0
 
     try:
-        os.mkdir(name)
+        os.mkdir("facetest/dataset/"+name)
     except FileExistsError:
         print("Directory already exist")
 
