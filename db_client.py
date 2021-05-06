@@ -11,6 +11,7 @@
 ######### Libraries #########
 import sys
 from mysql.connector import connect, Error
+import hashlib as h
 #from termios import tcflush, TCIFLUSH
 #from time import time
 
@@ -25,6 +26,14 @@ DB = "doorlock"
 DBFieldsList = ["id","username","pin","fingerID"]
 
 ######### Functions #########
+
+def hashPin(pin):
+    rawHash = h.pbkdf2_hmac('sha256', pin.encode("utf-8"), "capstone".encode("utf-8"), 1000)
+    strHash = ""
+    for B in rawHash:
+        strHash += str(B)
+    print(strHash)
+    return strHash
 
 # IP Connect to DB
 def connectMYSQL():
@@ -44,7 +53,7 @@ def findInDB(wantedFieldsList, KnownColumnList, KnownDataList, isUpdate=False):
     whereClause = formatFunctionArgs([KnownColumnList, KnownDataList],[False,True],multiWhere=True)
     #Form the appropriate Query
     query = "select {} from access_hash where {};".format(strWantedFields[0],whereClause)
-    print("MYSQL find query:\n" + query)
+ #   print("MYSQL find query:\n" + query)
  #   exit(1)
     # Web Connect to DB
     connection, cursor = connectMYSQL()
@@ -88,7 +97,7 @@ def createNewDBEntry(fieldsList, fieldsData):
     strArgs = formatFunctionArgs([fieldsList,fieldsData],[False,True])
     # Form the Query
     query = "insert into access_hash ({}) values({});".format(strArgs[0],str(strArgs[1]))
-    print(query)
+#    print(query)
 #    exit(1)
     # Web Connect to DB
     connection, cursor = connectMYSQL()
