@@ -19,18 +19,16 @@ def main():
         for i in range(4):
            digit = randint(0,9)
            passcode = str(passcode) + str(digit)
-        try:
-            dbEntry = db.findInDB(["id"], ["pin"], [db.hashPin(passcode)])
-        except:
+        dbEntry = db.findInDB(["id"], ["pin"], [db.hashPin(passcode)])
+        if dbEntry == []:
             print("Passcode is {}".format(passcode))
             break
 
     #generate fingerID
     finger = 1
     while True:
-        try:
-            dbEntry = db.findInDB(["id"], ["fingerID"], [finger])
-        except:
+         dbEntry = db.findInDB(["id"], ["fingerID"], [finger])
+        if dbEntry == []:
             break
         finger += 1
     fprintMod.enroll_finger(finger)
