@@ -181,8 +181,8 @@ def get_num():
 def delete_finger(fingerId):
     if finger.delete_model(fingerId) == adafruit_fingerprint.OK:
             return True
-        else:
-            return False
+    else:
+        return False
 
 """
 while True:
