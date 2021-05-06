@@ -22,7 +22,7 @@ def main():
            if i == 0:
                passcode=digit
             else:
-                passcode = str(passcode) + str(digit)
+               passcode = str(passcode) + str(digit)
         dbEntry = db.findInDB(["id"], ["pin"], [db.hashPin(passcode)])
         if dbEntry == []:
             print("Passcode is {}".format(passcode))
