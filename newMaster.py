@@ -66,7 +66,7 @@ try:
         pastKey=keys
         while(keys != ['E'] and len(enteredPin) < 8):
             keys = keypadMod.keypad.pressed_keys
-            if key == pastKey:
+            if keys == pastKey:
                 continue
             else:
                 if keys:
