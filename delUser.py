@@ -42,4 +42,42 @@ def main():
         rmtree("facetest/dataset/"+dbEntry[1])
     except:
         print("Could not find {}".format(dbEntry[1]))
+
+    #load pickle file
+    data=[]
+    with (open("encodings.pickle", "rb")) as fr:
+        while True:
+            try:
+                data.append(pickle.load(fr))
+            except EOFError:
+                break
+
+    # initialize the list of known encodings and known names
+    try:
+        knownEncodings = data[0]['encodings']
+        knownNames = data[0]['names']
+    except:
+        knownEncodings=[]
+        knownNames=[]
+    pastName =  False
+
+    # loop over the names
+    index = []
+	for i in len(knownNames):
+		if name == knownNames[i]:
+            index.append(i)
+    
+    for i in len(index):
+        del knownNames[index[-1]]
+        del knownEncodings[index[-1]]
+
+    # dump the facial encodings + names to disk
+    print("[INFO] serializing encodings...")
+    data = {"encodings": knownEncodings, "names": knownNames}
+    f=open("encodings.pickle", "wb")
+    f.write(pickle.dumps(data))
+    f.close()
+
     fprintMod.delete_finger(dbEntry[2])
+
+main()
