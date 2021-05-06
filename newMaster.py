@@ -63,16 +63,12 @@ try:
         #Check for key entry, when key is in database, check fingerprint and/or facial
         keys = keypadMod.keypad.pressed_keys
         
-        while(keys != ['E'] and len(enteredPin) < 8):
-            pastKey=keys
+        while(keys != ['E'] and len(enteredPin) < 4):
             keys = keypadMod.keypad.pressed_keys
-            if keys == pastKey and keys != []:
-                continue
-            else:
-                if keys:
-                    print(keys[0])
-                    enteredPin += str(keys[0])
-                    #sleep(.5)
+            if keys:
+                print(keys[0])
+                enteredPin += str(keys[0])
+                sleep(.5)
           
           ## Check if in database ##
         dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
