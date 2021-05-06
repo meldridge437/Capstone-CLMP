@@ -21,7 +21,7 @@ def main():
            digit = randint(0,9)
            if i == 0:
                passcode=digit
-            else:
+           else:
                passcode = str(passcode) + str(digit)
         dbEntry = db.findInDB(["id"], ["pin"], [db.hashPin(passcode)])
         if dbEntry == []:
