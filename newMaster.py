@@ -72,8 +72,8 @@ try:
                 if keys:
                     print(keys[0])
                     enteredPin += str(keys[0])
-                    sleep(.5)
-                pastKey = []
+                    #sleep(.5)
+                pastKey = keys
           
           ## Check if in database ##
         dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
