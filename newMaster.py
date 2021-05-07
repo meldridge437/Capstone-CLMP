@@ -71,11 +71,11 @@ try:
           ## Check if in database ##
         dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
         if dbEntry == []:
-            print("keypad incorrect")
+            #print("keypad incorrect")
             valid_key = False
             dbEntry = [""]
         else:
-            print("keypad correct")
+            #print("keypad correct")
             valid_key = True
 
 
@@ -95,6 +95,7 @@ try:
                         
                         if openLock and fingerID_Actual == dbEntry[1]:
                             #openDoor 2 step MFA
+                            print("2 Factor successful")
                             speak.success()
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
@@ -104,6 +105,7 @@ try:
                         break
                     else:
                         enteredPin = ""
+                        print("2 Factor unsuccessful")
                         rgbMod.red()
                         speak.fail()
                         break
@@ -118,12 +120,14 @@ try:
                             name = ""
                         #make sure same name as matched with key pin
                         if (faceDetected and name == dbEntry[0]):
+                            print("2 Factor successful")
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
                             speak.success()
                             enteredPin = ""
                             break
                         else:
+                            print("2 Factor unsuccessful")
                             enteredPin = ""
                             rgbMod.red()
                             speak.fail()

@@ -38,7 +38,7 @@ def main():
         finger += 1
     while(not fprintMod.enroll_finger(finger)):
         apple = 1
-    print("fingerID is {}".format(finger))
+    #print("fingerID is {}".format(finger))
 
     #generate face files
     while True:

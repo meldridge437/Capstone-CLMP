@@ -32,7 +32,7 @@ def hashPin(pin):
     strHash = ""
     for B in rawHash:
         strHash += str(B)
-    print(strHash)
+    #print(strHash)
     return strHash
 
 # IP Connect to DB
