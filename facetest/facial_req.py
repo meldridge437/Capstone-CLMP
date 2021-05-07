@@ -130,4 +130,4 @@ def main():
 """# stop the timer and display FPS information
 GPIO.cleanup()
 """
-
+#main()

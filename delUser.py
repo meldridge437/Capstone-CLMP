@@ -44,7 +44,7 @@ def main():
 
     #load pickle file
     data=[]
-    with (open("encodings.pickle", "rb")) as fr:
+    with (open("facetest/encodings.pickle", "rb")) as fr:
         while True:
             try:
                 data.append(pickle.load(fr))
@@ -59,7 +59,8 @@ def main():
         knownEncodings=[]
         knownNames=[]
     pastName =  False
-
+    
+    name = dbEntry[1]
     # loop over the names
     index = []
     for i in range(len(knownNames)):

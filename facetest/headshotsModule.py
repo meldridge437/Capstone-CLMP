@@ -30,7 +30,7 @@ def addPic(name):
             break
         elif k%256 == 32:
             # SPACE pressed
-            img_name = "dataset/"+ name +"/image_{}.jpg".format(img_counter)
+            img_name = "facetest/dataset/"+ name +"/image_{}.jpg".format(img_counter)
             cv2.imwrite(img_name, frame)
             print("{} written!".format(img_name))
             img_counter += 1

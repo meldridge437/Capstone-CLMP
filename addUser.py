@@ -36,7 +36,8 @@ def main():
         if dbEntry == []:
             break
         finger += 1
-    fprintMod.enroll_finger(finger)
+    while(not fprintMod.enroll_finger(finger)):
+        apple = 1
     print("fingerID is {}".format(finger))
 
     #generate face files

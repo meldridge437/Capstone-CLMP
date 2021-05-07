@@ -184,7 +184,7 @@ def delete_finger(fingerId):
     else:
         return False
 
-"""
+'''
 while True:
     print("----------------")
     if finger.read_templates() != adafruit_fingerprint.OK:
@@ -213,4 +213,4 @@ while True:
         else:
             print("Failed to delete")
 
-"""
+'''
