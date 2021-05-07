@@ -82,15 +82,16 @@ def train():
 
 	#load pickle file
 	data=[]
-	with (open("facetest/encodings.pickle", "rb")) as fr:
-		while True:
-			try:
-				data.append(pickle.load(fr))
-			except EOFError:
-				break
-			except FileNotFoundError:
-				x=open("encodings.pickle", "x")
-				x.close()
+	try:
+		with (open("facetest/encodings.pickle", "rb")) as fr:
+			while True:
+				try:
+					data.append(pickle.load(fr))
+				except EOFError:
+					break
+	except FileNotFoundError:
+		x=open("encodings.pickle", "x")
+		x.close()
 
 	# initialize the list of known encodings and known names
 	try:
