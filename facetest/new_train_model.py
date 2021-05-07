@@ -147,4 +147,4 @@ def train():
 	f.write(pickle.dumps(data))
 	f.close()
 
-trainHere()
+#trainHere()
