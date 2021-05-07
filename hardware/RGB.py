@@ -1,8 +1,8 @@
 from time import sleep
 import RPi.GPIO as GPIO
-redPin = 6
-greenPin = 5
-bluePin = 4
+redPin = 17
+greenPin = 16
+bluePin = 13
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(redPin, GPIO.OUT)
 GPIO.setup(greenPin, GPIO.OUT)
