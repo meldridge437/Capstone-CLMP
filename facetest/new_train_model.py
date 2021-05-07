@@ -82,7 +82,7 @@ def train():
 
 	#load pickle file
 	data=[]
-	with (open("encodings.pickle", "rb")) as fr:
+	with (open("facetest/encodings.pickle", "rb")) as fr:
 		while True:
 			try:
 				data.append(pickle.load(fr))
@@ -143,7 +143,7 @@ def train():
 	# dump the facial encodings + names to disk
 	print("[INFO] serializing encodings...")
 	data = {"encodings": knownEncodings, "names": knownNames}
-	f=open("encodings.pickle", "wb")
+	f=open("facetest/encodings.pickle", "wb")
 	f.write(pickle.dumps(data))
 	f.close()
 
