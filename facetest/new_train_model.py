@@ -109,11 +109,14 @@ def train():
 		#check if name already exist
 		for x in knownNames:
 			if name == oldName:
+				print(name)
 				break
 			elif x == name:
+				print("Known Name")
 				pastName = True
 				break
 			else:
+				print("New name")
 				oldName = name
 				
 		if pastName == True:
