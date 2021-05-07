@@ -66,8 +66,8 @@ def trainHere():
 			# add each encoding + name to our set of known names and
 			# encodings
 			knownEncodings.append(encoding)
-    	    knownNames.append(name)
-			
+			knownNames.append(name)
+	
 	# dump the facial encodings + names to disk
 	print("[INFO] serializing encodings...")
 	data = {"encodings": knownEncodings, "names": knownNames}
@@ -97,7 +97,7 @@ def train():
 		knownEncodings=[]
 		knownNames=[]
 	pastName =  False
-    oldName = ""
+	oldName = ""
 
 	# loop over the image paths
 	for (i, imagePath) in enumerate(imagePaths):
@@ -108,13 +108,13 @@ def train():
 
 		#check if name already exist
 		for x in knownNames:
-            if name == oldName:
-                break
-            elif x == name:
-			    pastName = True
-                break
-            else:
-                oldName = name
+			if name == oldName:
+				break
+			elif x == name:
+				pastName = True
+				break
+			else:
+				oldName = name
 				
 		if pastName == True:
 			pastName = False
