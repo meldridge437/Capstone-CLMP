@@ -1,8 +1,8 @@
 import db_client as db
 import hashlib as h
 
-username = "matt"
-pin = "4321"
+username = "Louis"
+pin = "1333"
 fingerID = 1
 
 def hashPin(pin):

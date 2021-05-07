@@ -15,10 +15,6 @@ from hardware import RGB as rgbMod
 from hardware import speaker as speak
 import db_client as db
 
-from threading import Thread
-
-from pynput.keyboard import Key, Controller
-keyboard = Controller()
 from easygui import *
 #may not set global variable in facial req file
 
@@ -67,18 +63,14 @@ try:
         #Check for key entry, when key is in database, check fingerprint and/or facial
         keys = keypadMod.keypad.pressed_keys
         entered = ""
-        p = Thread(target=enterbox, args=("CV MFA Security"), kwargs=dict(title="CV MFA Security")
-        p.start()
-        enterbox("CV MFA Security")
         while(keys != ['E'] and len(enteredPin) < 4):
             keys = keypadMod.keypad.pressed_keys
             if keys:
-                print(str(keys[0]))
-                keyboard.press(str(keys[0]))
-                keyboard.release(str(keys[0]))
+                
+                msgbox(enteredPin, "CV MFA Security")
                 enteredPin += str(keys[0])
                 sleep(.5)
-        p.join()
+          
           ## Check if in database ##
         dbEntry = db.findInDB(["username", "fingerID"], ["pin"], [db.hashPin(enteredPin)])
         if dbEntry == []:
@@ -106,9 +98,10 @@ try:
                         
                         if openLock and fingerID_Actual == dbEntry[1]:
                             #openDoor 2 step MFA
-                            speak.success()
+                            
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
+                            speak.success()
                         else:
                             speak.fail()
                             enteredPin = ""
@@ -128,9 +121,10 @@ try:
                             name = ""
                         #make sure same name as matched with key pin
                         if (faceDetected and name == dbEntry[0]):
-                            speak.success()
+                            
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
+                            speak.success()
                             enteredPin = ""
                             break
                         else:
