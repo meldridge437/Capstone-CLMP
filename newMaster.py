@@ -47,7 +47,7 @@ def check_fingerprint():
     return fprintMod.get_fingerprint(), fprintMod.finger.finger_id
 
 #init led
-rgbMod.blue()
+rgbMod.turnOFF()
 
 #init lock
 lockMod.lock()
@@ -104,6 +104,7 @@ try:
                         break
                     else:
                         enteredPin = ""
+                        rgbMod.red()
                         speak.fail()
                         break
                 #activate facial req
@@ -117,13 +118,14 @@ try:
                             name = ""
                         #make sure same name as matched with key pin
                         if (faceDetected and name == dbEntry[0]):
-                            speak.success()
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
+                            speak.success()
                             enteredPin = ""
                             break
                         else:
                             enteredPin = ""
+                            rgbMod.red()
                             speak.fail()
                             break
 
