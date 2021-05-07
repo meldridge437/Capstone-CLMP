@@ -36,7 +36,7 @@ def main():
         return
     else:
         print("keypad correct")
-    db.deleteDBEntry(dbEntry[0])
+    
     try:
         rmtree("facetest/dataset/"+dbEntry[1])
     except:
@@ -59,18 +59,17 @@ def main():
         knownEncodings=[]
         knownNames=[]
     pastName =  False
-    
     name = dbEntry[1]
     # loop over the names
     index = []
     for i in range(len(knownNames)):
-        if name == knownNames[i]:
-            index.append(i)
-    
-    for i in range(len(index)):
-        del knownNames[index[-1]]
-        del knownEncodings[index[-1]]
-
+       if name == knownNames[i]:
+           index.append(i)
+    index.reverse()
+    for i in index:
+        del knownNames[i]
+        del knownEncodings[i]
+    db.deleteDBEntry(dbEntry[0])
     # dump the facial encodings + names to disk
     print("[INFO] serializing encodings...")
     data = {"encodings": knownEncodings, "names": knownNames}

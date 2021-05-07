@@ -1,9 +1,9 @@
 import db_client as db
 import hashlib as h
 
-username = "Louis"
-pin = "1333"
-fingerID = 1
+username = "Matthew"
+pin = "6502"
+fingerID = 3
 
 def hashPin(pin):
     rawHash = h.pbkdf2_hmac('sha256', pin.encode("utf-8"), "capstone".encode("utf-8"), 1000)

@@ -99,6 +99,7 @@ try:
                             speak.success()
                             rgbMod.green()
                             lockMod.unlockTimed(lockTime)
+                            enteredPin = ""
                         else:
                             speak.fail()
                             enteredPin = ""
@@ -118,6 +119,7 @@ try:
                         except:
                             faceDetected = False
                             name = ""
+                        print("face name: " + name)
                         #make sure same name as matched with key pin
                         if (faceDetected and name == dbEntry[0]):
                             print("2 Factor successful")

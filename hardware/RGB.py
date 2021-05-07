@@ -10,7 +10,7 @@ GPIO.setup(bluePin, GPIO.OUT)
 GPIO.setwarnings(False)
 sleep(2)
 
-def turnOff():
+def turnOFF():
     GPIO.output(redPin,GPIO.LOW)
     GPIO.output(greenPin,GPIO.LOW)
     GPIO.output(bluePin,GPIO.LOW)
