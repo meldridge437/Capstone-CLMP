@@ -138,7 +138,7 @@ def train():
 			# add each encoding + name to our set of known names and
 			# encodings
 			knownEncodings.append(encoding)
-	                knownNames.append(name)
+			knownNames.append(name)
 
 	# dump the facial encodings + names to disk
 	print("[INFO] serializing encodings...")
