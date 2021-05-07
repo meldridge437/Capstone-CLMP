@@ -11,42 +11,42 @@ GPIO.setwarnings(False)
 sleep(2)
 
 def turnOff():
-    GPIO.output(redPin,GPIO.HIGH)
-    GPIO.output(greenPin,GPIO.HIGH)
-    GPIO.output(bluePin,GPIO.HIGH)
+    GPIO.output(redPin,GPIO.LOW)
+    GPIO.output(greenPin,GPIO.LOW)
+    GPIO.output(bluePin,GPIO.LOW)
     
 def white():
-    GPIO.output(redPin,GPIO.LOW)
-    GPIO.output(greenPin,GPIO.LOW)
-    GPIO.output(bluePin,GPIO.LOW)
+    GPIO.output(redPin,GPIO.HIGH)
+    GPIO.output(greenPin,GPIO.HIGH)
+    GPIO.output(bluePin,GPIO.HIGH)
     
 def red():
-    GPIO.output(redPin,GPIO.LOW)
-    GPIO.output(greenPin,GPIO.HIGH)
-    GPIO.output(bluePin,GPIO.HIGH)
+    GPIO.output(redPin,GPIO.HIGH)
+    GPIO.output(greenPin,GPIO.LOW)
+    GPIO.output(bluePin,GPIO.LOW)
 
 def green():
-    GPIO.output(redPin,GPIO.HIGH)
-    GPIO.output(greenPin,GPIO.LOW)
-    GPIO.output(bluePin,GPIO.HIGH)
+    GPIO.output(redPin,GPIO.LOW)
+    GPIO.output(greenPin,GPIO.HIGH)
+    GPIO.output(bluePin,GPIO.LOW)
     
 def blue():
-    GPIO.output(redPin,GPIO.HIGH)
-    GPIO.output(greenPin,GPIO.HIGH)
-    GPIO.output(bluePin,GPIO.LOW)
-    
-def yellow():
     GPIO.output(redPin,GPIO.LOW)
     GPIO.output(greenPin,GPIO.LOW)
     GPIO.output(bluePin,GPIO.HIGH)
     
-def purple():
-    GPIO.output(redPin,GPIO.LOW)
+def yellow():
+    GPIO.output(redPin,GPIO.HGH)
     GPIO.output(greenPin,GPIO.HIGH)
     GPIO.output(bluePin,GPIO.LOW)
     
-def lightBlue():
+def purple():
     GPIO.output(redPin,GPIO.HIGH)
     GPIO.output(greenPin,GPIO.LOW)
-    GPIO.output(bluePin,GPIO.LOW)
+    GPIO.output(bluePin,GPIO.HIGH)
+    
+def lightBlue():
+    GPIO.output(redPin,GPIO.LOW)
+    GPIO.output(greenPin,GPIO.HIGH)
+    GPIO.output(bluePin,GPIO.HIGH)
 

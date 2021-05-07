@@ -47,9 +47,7 @@ def check_fingerprint():
     return fprintMod.get_fingerprint(), fprintMod.finger.finger_id
 
 #init led
-rgbMod.lightBlue()
-sleep(1)
-rgbMod.red()
+rgbMod.blue()
 
 #init lock
 lockMod.lock()
