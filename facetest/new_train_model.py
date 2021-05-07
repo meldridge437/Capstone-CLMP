@@ -88,6 +88,9 @@ def train():
 				data.append(pickle.load(fr))
 			except EOFError:
 				break
+			except FileNotFoundError:
+				x=open("encodings.pickle", "x")
+				x.close()
 
 	# initialize the list of known encodings and known names
 	try:
@@ -118,6 +121,8 @@ def train():
 			else:
 				print("New name")
 				oldName = name
+		if len(knownNames) == 0:
+			oldName = name
 				
 		if pastName == True:
 			pastName = False
